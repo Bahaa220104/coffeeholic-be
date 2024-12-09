@@ -1,0 +1,190 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  firstName String?
+  lastName  String?
+  phone     String?
+  password  String?
+
+  isAdmin Boolean?
+
+  address  String?
+  city     String?
+  building String?
+
+  orders      order[]
+  reservation reservation[]
+}
+
+model product {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  name        String?
+  description String?
+  image       String? @db.LongText()
+  price       Float?
+
+  types         producttype[]
+  categories    category[]
+  variants      variant[]
+  variantGroups variantgroup[]
+
+  addons product[] @relation("ProductAddons")
+  usedBy product[] @relation("ProductAddons")
+}
+
+model producttype {
+  name String @id
+
+  products product[]
+}
+
+model category {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  name     String?
+  products product[]
+}
+
+model variantgroup {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  name String?
+
+  variants variant[]
+
+  product   product? @relation(fields: [productId], references: [id])
+  productId Int?
+}
+
+model variant {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  name  String?
+  price Float?
+
+  product        product?      @relation(fields: [productId], references: [id])
+  productId      Int?
+  variantGroup   variantgroup? @relation(fields: [variantGroupId], references: [id])
+  variantGroupId Int?
+}
+
+model order {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  content Json?
+
+  type        String?
+  time        DateTime?
+  address     String?
+  city        String?
+  building    String?
+  completedAt DateTime?
+
+  user   user? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  review   review? @relation(fields: [reviewId], references: [id])
+  reviewId Int?    @unique
+}
+
+model table {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  number      String?
+  description String?
+  seats       Int?
+
+  x Int?
+  y Int?
+  w Int?
+  h Int?
+}
+
+model reservation {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  content     Json?
+  date        DateTime?
+  time        DateTime?
+  completedAt DateTime?
+
+  user   user? @relation(fields: [userId], references: [id])
+  userId Int?
+}
+
+model faq {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  question String?
+  answer   String?
+}
+
+model businessinformation {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  phone String?
+  email String?
+}
+
+model review {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+  deletedAt      DateTime?
+  sequenceNumber Float?
+
+  rating  Float?
+  remarks String? @db.LongText()
+
+  order order?
+}
