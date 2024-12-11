@@ -3,6 +3,8 @@ import prisma from "../utils/prisma.util.js";
 import validateObject from "../utils/validate.util.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 async function login(req, res) {
   const data = validateObject(["phone", "password"], req.body);
@@ -32,7 +34,7 @@ async function login(req, res) {
     throw new Error("Invalid Credentials");
   }
 
-  const token = jwt.sign({ id: user.id }, "alksjlaksdjlaksdj");
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
 
   res.send({ token });
 }

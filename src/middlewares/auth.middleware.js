@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import prisma from "../utils/prisma.util.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 export default function authMiddleware(
   type = "required" | "required-admin" | "none"
@@ -13,7 +15,7 @@ export default function authMiddleware(
         throw new Error("Token is required");
       }
 
-      const decodedToken = jwt.verify(token, "alksjlaksdjlaksdj");
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
       if (!Number(decodedToken?.id)) {
         throw new Error("Invalid token");
       }
