@@ -5,6 +5,10 @@ import authRouter from "./auth.route.js";
 import imageRouter from "./image.route.js";
 
 export default function setupRoutes(app) {
+  app.get("/", (req, res) => {
+    res.send("Running 🏃🏃🏃");
+  });
+
   app.use(authRouter);
   app.use(imageRouter);
 
