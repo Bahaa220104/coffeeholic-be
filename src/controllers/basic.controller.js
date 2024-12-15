@@ -603,6 +603,7 @@ const matrix = {
         id: true,
         phone: true,
         email: true,
+        address: true,
       },
     },
     findSingle: {
@@ -610,6 +611,7 @@ const matrix = {
         id: true,
         phone: true,
         email: true,
+        address: true,
       },
     },
     update: {
@@ -617,8 +619,9 @@ const matrix = {
         id: true,
         phone: true,
         email: true,
+        address: true,
       },
-      validate: ["phone", "email"],
+      validate: ["phone", "email", "address"],
     },
   },
 

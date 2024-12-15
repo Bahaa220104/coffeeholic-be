@@ -172,8 +172,9 @@ model businessinformation {
   deletedAt      DateTime?
   sequenceNumber Float?
 
-  phone String?
-  email String?
+  phone   String?
+  email   String?
+  address String? @db.LongText()
 }
 
 model review {
