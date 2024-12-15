@@ -198,6 +198,11 @@ export default function setupRoutes(app) {
     authMiddleware("required-admin"),
     controller.findSingle("user")
   );
+  app.put(
+    "/users/:id",
+    authMiddleware("required-admin"),
+    controller.updateSingle("user")
+  );
   app.delete(
     "/users/:id",
     authMiddleware("required-admin"),
@@ -210,11 +215,7 @@ export default function setupRoutes(app) {
     authMiddleware("required-admin"),
     controller.findSingle("faq")
   );
-  app.post(
-    "/faqs",
-    authMiddleware("required-admin"),
-    controller.createSingle("faq")
-  );
+  app.post("/faqs", authMiddleware("required"), controller.createSingle("faq"));
   app.put(
     "/faqs/:id",
     authMiddleware("required-admin"),

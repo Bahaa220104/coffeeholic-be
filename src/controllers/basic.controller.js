@@ -197,6 +197,7 @@ const matrix = {
       select: {
         id: true,
         name: true,
+        type: true,
         products: {
           where: {
             deletedAt: null,
@@ -209,6 +210,7 @@ const matrix = {
             description: true,
             addons: true,
             types: true,
+            categories: true,
             variantGroups: {
               where: {
                 deletedAt: null,
@@ -237,6 +239,7 @@ const matrix = {
       select: {
         id: true,
         name: true,
+        type: true,
         products: {
           select: {
             id: true,
@@ -246,15 +249,15 @@ const matrix = {
       },
     },
     create: {
-      select: { id: true, name: true },
-      validate: ["name"],
+      select: { id: true, name: true, type: true },
+      validate: ["name", "type"],
     },
     update: {
-      select: { id: true, name: true },
-      validate: ["name"],
+      select: { id: true, name: true, type: true },
+      validate: ["name", "type"],
     },
     remove: {
-      select: { id: true, name: true },
+      select: { id: true, name: true, type: true },
     },
   },
 
@@ -550,6 +553,10 @@ const matrix = {
         lastName: true,
         phone: true,
         isAdmin: true,
+        address: true,
+        city: true,
+        building: true,
+        email: true,
       },
     },
     findSingle: {
@@ -562,7 +569,12 @@ const matrix = {
         address: true,
         city: true,
         building: true,
+        email: true,
       },
+    },
+    update: {
+      select: { id: true },
+      validate: ["isAdmin"],
     },
     remove: {
       select: { id: true, firstName: true },
@@ -571,10 +583,24 @@ const matrix = {
 
   faq: {
     findMany: {
+      input: (query, user) => {
+        console.log("USER: ", user);
+        if (user?.isAdmin) {
+          return {};
+        } else {
+          return {
+            approvedAt: {
+              not: null,
+            },
+          };
+        }
+      },
       select: {
         id: true,
         question: true,
         answer: true,
+        approvedAt: true,
+        askedBy: true,
       },
     },
     findSingle: {
@@ -582,15 +608,17 @@ const matrix = {
         id: true,
         question: true,
         answer: true,
+        approvedAt: true,
+        askedBy: true,
       },
     },
     create: {
       select: { id: true, question: true },
-      validate: ["question", "answer"],
+      validate: ["question", "answer", "userId", "approvedAt"],
     },
     update: {
       select: { id: true, question: true },
-      validate: ["question", "answer"],
+      validate: ["question", "answer", "approvedAt"],
     },
     remove: {
       select: { id: true, question: true },
@@ -604,6 +632,8 @@ const matrix = {
         phone: true,
         email: true,
         address: true,
+        openingHours: true,
+        googleMapsUrl: true,
       },
     },
     findSingle: {
@@ -612,6 +642,8 @@ const matrix = {
         phone: true,
         email: true,
         address: true,
+        openingHours: true,
+        googleMapsUrl: true,
       },
     },
     update: {
@@ -620,8 +652,10 @@ const matrix = {
         phone: true,
         email: true,
         address: true,
+        openingHours: true,
+        googleMapsUrl: true,
       },
-      validate: ["phone", "email", "address"],
+      validate: ["phone", "email", "address", "googleMapsUrl", "openingHours"],
     },
   },
 
