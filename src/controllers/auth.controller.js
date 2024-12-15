@@ -123,7 +123,7 @@ async function forgotPassword(req, res) {
     await mailService.sendMail({
       subject: "Reset Password",
       to: data.email.trim(),
-      html: `<div>Follow this link to reset your password <a href="http://localhost:5173/auth/resetpassword/${token}">CLICK HERE</a></div>`,
+      html: `<div>Follow this link to reset your password <a href="https://coffeeholic.onrender.com/auth/resetpassword/${token}">CLICK HERE</a></div>`,
     });
   }
 
