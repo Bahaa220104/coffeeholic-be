@@ -8,17 +8,26 @@ export default function authMiddleware(
 ) {
   return async (req, res, next) => {
     try {
-      const token = req.headers?.authorization?.replace("Bearer ", "") || null;
+      try {
+        const token =
+          req.headers?.authorization?.replace("Bearer ", "") || null;
 
-      if (token) {
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        if (Number(decodedToken?.id)) {
-          req.user = await prisma.user.findUnique({
-            where: {
-              id: Number(decodedToken?.id),
-              deletedAt: null,
-            },
-          });
+        if (token) {
+          const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+          if (Number(decodedToken?.id)) {
+            req.user = await prisma.user.findUnique({
+              where: {
+                id: Number(decodedToken?.id),
+                deletedAt: null,
+              },
+            });
+          }
+        }
+      } catch (err) {
+        if (type === "none") {
+          return next();
+        } else {
+          throw new Error(err);
         }
       }
 

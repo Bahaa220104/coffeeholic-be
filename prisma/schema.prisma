@@ -26,9 +26,9 @@ model user {
   city     String?
   building String?
 
-  orders      order[]
-  reservation reservation[]
-  faqs        faq[]
+  orders       order[]
+  reservations reservation[]
+  faqs         faq[]
 }
 
 model product {
